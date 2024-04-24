@@ -1,12 +1,13 @@
 package dk.kea.dat3js.hogwarts5.students;
 
 import dk.kea.dat3js.hogwarts5.house.House;
+import dk.kea.dat3js.hogwarts5.shared.PersonWithNames;
 import jakarta.persistence.*;
 
 import java.util.Objects;
 
 @Entity
-public class Student {
+public class Student implements PersonWithNames {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
@@ -90,44 +91,11 @@ public class Student {
     this.schoolYear = schoolYear;
   }
 
-  public String getFullName() {
-    return firstName + " " + (middleName != null ? middleName + " " : "") + lastName;
-  }
 
-  public void setFullName(String fullName) {
-    if (fullName == null || fullName.isEmpty()) {
-      setFirstName(null);
-      setMiddleName(null);
-      setLastName(null);
-      return;
-    }
 
-    fullName = fullName.trim();
-    int firstSpace = fullName.indexOf(' ');
-    int lastSpace = fullName.lastIndexOf(' ');
 
-    if (firstSpace == -1) {
-      setFirstName(fullName);
-      setMiddleName(null);
-      setLastName(null);
-    } else if (firstSpace == lastSpace) {
-      setFirstName(fullName.substring(0, firstSpace));
-      setMiddleName(null);
-      setLastName(fullName.substring(firstSpace + 1));
-    } else {
-      setFirstName(fullName.substring(0, firstSpace));
-      setMiddleName(fullName.substring(firstSpace + 1, lastSpace));
-      setLastName(fullName.substring(lastSpace + 1));
-    }
-  }
 
-  public String capitalize(String name) {
-    if (name != null && !name.isEmpty()) {
-      name = name.trim().substring(0, 1).toUpperCase() + name.trim().substring(1).toLowerCase();
-    }
 
-    return name;
-  }
 
   @Override
   public boolean equals(Object o) {
