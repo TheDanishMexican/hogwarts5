@@ -102,6 +102,7 @@ public class Student {
       return;
     }
 
+    fullName = fullName.trim();
     int firstSpace = fullName.indexOf(' ');
     int lastSpace = fullName.lastIndexOf(' ');
 
