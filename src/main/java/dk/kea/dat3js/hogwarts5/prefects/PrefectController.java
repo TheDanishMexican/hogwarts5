@@ -21,9 +21,19 @@ public class PrefectController {
         return ResponseEntity.of(prefectService.togglePrefectStatus(id));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<StudentResponseDTO> getPrefect(@PathVariable int id) {
+        return ResponseEntity.of(prefectService.findByIdIfExists(id));
+    }
+
     @GetMapping
     public List<StudentResponseDTO> findPrefects() {
         return prefectService.findPrefects();
+    }
+
+    @GetMapping("/house/{house}")
+    public List<StudentResponseDTO> findPrefectsByHouse(@PathVariable String house) {
+        return prefectService.findPrefectsByHouse(house);
     }
 
 

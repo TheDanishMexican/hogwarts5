@@ -20,8 +20,10 @@ public class PrefectService {
     }
 
     public Optional<StudentResponseDTO> togglePrefectStatus(int id) {
-        if (studentRepository.existsById(id)) {
-            Student student = studentRepository.findById(id).orElseThrow();
+        Optional<Student> studentOptional = studentRepository.findById(id);
+
+        if (studentOptional.isPresent()) {
+            Student student = studentOptional.get();
             student.setPrefect(!student.isPrefect());
             return Optional.of(studentService.toDTO(studentRepository.save(student)));
         } else {
@@ -29,8 +31,22 @@ public class PrefectService {
         }
     }
 
+    public Optional<StudentResponseDTO> findByIdIfExists(int id) {
+        return studentRepository.findById(id)
+                .filter(Student::isPrefect)
+                .map(studentService::toDTO);
+    }
+
+
     public List<StudentResponseDTO> findPrefects() {
         return studentRepository.findAllByPrefectIsTrue().stream().map(studentService::toDTO).toList();
     }
 
+    public List<StudentResponseDTO> findPrefectsByHouse(String house) {
+        String formattedHouse = Character.toUpperCase(house.charAt(0)) + house.substring(1).toLowerCase();
+        List<StudentResponseDTO> prefects = findPrefects();
+        return prefects.stream()
+                .filter(student -> student.house().equals(formattedHouse))
+                .toList();
+    }
 }
