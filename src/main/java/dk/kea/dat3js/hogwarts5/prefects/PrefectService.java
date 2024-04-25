@@ -24,6 +24,24 @@ public class PrefectService {
 
         if (studentOptional.isPresent()) {
             Student student = studentOptional.get();
+            List<StudentResponseDTO> prefectsInHouse = findPrefectsByHouse(student.getHouseName());
+
+            if (student.getSchoolYear() < 5) {
+                return Optional.empty();
+            }
+
+            if (prefectsInHouse.size() >= 2) {
+                return Optional.empty();
+            }
+
+            for (StudentResponseDTO prefect : prefectsInHouse) {
+                if (prefect.gender().equals(student.getGender())) {
+                    return Optional.empty();
+                }
+            }
+
+
+
             student.setPrefect(!student.isPrefect());
             return Optional.of(studentService.toDTO(studentRepository.save(student)));
         } else {

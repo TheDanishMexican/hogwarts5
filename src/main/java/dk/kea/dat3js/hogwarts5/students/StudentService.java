@@ -41,21 +41,21 @@ public class StudentService {
 
   public Optional<StudentResponseDTO> partialUpdate(int id, StudentRequestDTO student) {
     Optional<Student> existingStudent = studentRepository.findById(id);
-    if(existingStudent.isPresent()) {
+    if (existingStudent.isPresent()) {
       Student studentToUpdate = existingStudent.get();
-      if(student.firstName() != null) {
+      if (student.firstName() != null) {
         studentToUpdate.setFirstName(student.firstName());
       }
-      if(student.middleName() != null) {
+      if (student.middleName() != null) {
         studentToUpdate.setMiddleName(student.middleName());
       }
-      if(student.lastName() != null) {
+      if (student.lastName() != null) {
         studentToUpdate.setLastName(student.lastName());
       }
-      if(student.house() != null) {
+      if (student.house() != null) {
         studentToUpdate.setHouse(houseService.findById(student.house()).orElseThrow());
       }
-      if(student.schoolYear() != null) {
+      if (student.schoolYear() != null) {
         studentToUpdate.setSchoolYear(student.schoolYear());
       }
       return Optional.of(toDTO(studentRepository.save(studentToUpdate)));
@@ -73,14 +73,15 @@ public class StudentService {
 
   public StudentResponseDTO toDTO(Student studentEntity) {
     StudentResponseDTO dto = new StudentResponseDTO(
-        studentEntity.getId(),
-        studentEntity.getFirstName(),
-        studentEntity.getMiddleName(),
-        studentEntity.getLastName(),
-        studentEntity.getHouse().getName(),
-        studentEntity.getSchoolYear(),
-        studentEntity.getFullName(),
-        studentEntity.isPrefect()
+            studentEntity.getId(),
+            studentEntity.getFirstName(),
+            studentEntity.getMiddleName(),
+            studentEntity.getLastName(),
+            studentEntity.getHouse().getName(),
+            studentEntity.getSchoolYear(),
+            studentEntity.getFullName(),
+            studentEntity.isPrefect(),
+            studentEntity.getGender()
     );
 
     return dto;
@@ -88,12 +89,13 @@ public class StudentService {
 
   public Student fromDTO(StudentRequestDTO studentDTO) {
     Student entity = new Student(
-        studentDTO.firstName(),
-        studentDTO.middleName(),
-        studentDTO.lastName(),
-        houseService.findById(studentDTO.house()).orElseThrow(),
-        studentDTO.schoolYear(),
-        studentDTO.prefect()
+            studentDTO.firstName(),
+            studentDTO.middleName(),
+            studentDTO.lastName(),
+            houseService.findById(studentDTO.house()).orElseThrow(),
+            studentDTO.schoolYear(),
+            studentDTO.prefect(),
+            studentDTO.gender()
     );
 
     if (studentDTO.name() != null) {
