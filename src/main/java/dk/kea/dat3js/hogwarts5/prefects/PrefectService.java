@@ -40,8 +40,6 @@ public class PrefectService {
                 }
             }
 
-
-
             student.setPrefect(!student.isPrefect());
             return Optional.of(studentService.toDTO(studentRepository.save(student)));
         } else {
